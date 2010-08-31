@@ -1,6 +1,51 @@
-= node-rails
+= node.rb
 
-Description goes here.
+Embeds a Ruby interpreter (www.ruby-lang.org) into Node.js (www.nodejs.org) for your coding pleasure.
+
+== DISCLAIMER
+
+You should be aware that this doesn't yet work. I'm still programming it. In the spirit of behavior-driven development,
+I try to write at least a draft of the readme before I write the code. This helps guide the direction of the code.
+While I will try to make the gem work as closely to the following examples as possible, this is a very fluid process
+and the end result may or may not match. Also, as you may have guessed, since it's not all written yet, you can't
+actually _use_ it yet. Feel free to look at the code but keep in mind that it's unfinished.
+
+== Installation
+
+  gem install node.rb
+
+== Usage
+
+To create a Ruby context within your node.js application, do so like this:
+
+  var ruby = require('ruby');
+  ruby.eval('p 1+1');
+
+== Execution
+
+For your convenience, the node.rb gem ships with an executable so that you can just:
+  node-rb filename.js
+
+To execute with the stock node.js executable:
+  NODE_PATH=$NODE_PATH:path/to/node.rb node filename.js
+
+NODE_PATH is a standard option in node.js and is a simple environment variable. That means you can do this:
+
+  export NODE_PATH=$NODE_PATH:path/to/node.rb
+  node filename.js
+
+And finally, though I'm not sure why you'd want to do this, you can invoke Node from within Ruby:
+
+  require 'node-rb'
+  n = Node.new("path/to/javascript.js")
+  n.run
+
+That's roughly equivalent to running the node-rb command directly.
+
+== Roadmap
+
+There are plans to expose Node to Ruby and vice versa so that objects can travel between the two contexts,
+but that's not available at this time.
 
 == Note on Patches/Pull Requests
  

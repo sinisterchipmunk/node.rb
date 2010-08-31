@@ -4,11 +4,11 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "node-rails"
+    gem.name = "node.rb"
     gem.summary = %Q{TODO: one-line summary of your gem}
     gem.description = %Q{TODO: longer description of your gem}
     gem.email = "sinisterchipmunk@gmail.com"
-    gem.homepage = "http://github.com/sinisterchipmunk/node-rails"
+    gem.homepage = "http://github.com/sinisterchipmunk/node.rb"
     gem.authors = ["Colin MacKenzie IV"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
@@ -30,7 +30,32 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
   spec.rcov = true
 end
 
-task :spec => :check_dependencies
+def each_extension(&block)
+  Dir[File.join(File.dirname(__FILE__), "ext/*")].each do |path|
+    chdir path, &block
+  end
+end
+
+desc "make extensions"
+task :make do
+  each_extension do
+    system("ruby extconf.rb") && system("make") || raise("make failed")
+  end
+end
+
+namespace :make do
+  desc "make clean"
+  task :clean do
+    Dir['*.node'].each { |f| rm f }
+    each_extension do
+      rm(".lock-wscript") rescue nil
+      system("make clean") && system("rm -rf build") || raise("cleaning failed")
+    end
+  end
+end
+
+task :spec => [:check_dependencies, :make]
+task :clean => 'make:clean'
 
 task :default => :spec
 
@@ -39,7 +64,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "node-rails #{version}"
+  rdoc.title = "node.rb #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

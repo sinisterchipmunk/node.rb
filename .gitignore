@@ -19,3 +19,12 @@ rdoc
 pkg
 
 ## PROJECT::SPECIFIC
+build
+Makefile
+mkmf.log
+.lock-wscript
+*.node
+.idea
+*.so
+*.o
+wscript
