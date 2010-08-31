@@ -1,7 +1,7 @@
 var http = require('http');
 var ruby_context = require('ruby');
 
-ruby_context.eval("1+1");
+ruby_context.eval("p 1+1");
 
 /*
 http.createServer(function (req, res) {

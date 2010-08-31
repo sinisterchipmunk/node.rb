@@ -1,3 +1,5 @@
+require 'rbconfig'
+ENV['LD_LIBRARY_PATH'] ||= Config::expand(Config::CONFIG['libdir'])
 require File.join(File.dirname(__FILE__), "../ext/ruby/ruby")
 
 class Node

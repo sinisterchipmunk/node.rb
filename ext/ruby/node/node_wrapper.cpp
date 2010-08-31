@@ -1,6 +1,6 @@
 #include <node.h>
 #include <v8.h>
-#include "../common.h"
+#include "common.h"
 
 using namespace node;
 using namespace v8;

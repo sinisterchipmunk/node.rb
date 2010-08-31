@@ -48,8 +48,10 @@ namespace :make do
   task :clean do
     Dir['*.node'].each { |f| rm f }
     each_extension do
-      rm(".lock-wscript") rescue nil
-      system("make clean") && system("rm -rf build") || raise("cleaning failed")
+      system("make clean")
+      %w(build .lock-wscript wscript Makefile).each do |fi|
+        system("find . -name \"#{fi}\" -exec rm -rf {} \\;")
+      end
     end
   end
 end
