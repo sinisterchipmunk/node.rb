@@ -28,7 +28,7 @@ class Node
   end
 
   def run
-    system(command)
+    %x[#{command}].strip
   end
 
   # Constructs the execution command.

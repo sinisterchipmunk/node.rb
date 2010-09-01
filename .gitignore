@@ -28,3 +28,4 @@ mkmf.log
 *.so
 *.o
 wscript
+*.bundle

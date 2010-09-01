@@ -7,5 +7,3 @@ void Init_ruby(void)
 {
   
 }
-
-//

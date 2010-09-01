@@ -27,7 +27,7 @@ def configure(conf):
   conf.env.LIBPATH_RUBY = ['<%=Config::expand CONFIG['libdir']%>']
   conf.env.LIBPATH_RUBY += archdir
 
-  conf.check(header_name="ruby.h", errmsg='could not find ruby header file')
+  conf.check(header_name="ruby.h", includes=cpppath, errmsg='could not find ruby header file')
   conf.env.CCFLAGS_RUBY += ['<%=Config::expand CONFIG['CCDLFLAGS']%>']
   conf.env.shlib_PATTERN = '%s.<%=Config::expand CONFIG['DLEXT']%>'
 

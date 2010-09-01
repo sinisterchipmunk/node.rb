@@ -1,8 +1,5 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-require 'spec'
-require 'spec/autorun'
-require 'node-rb'
 
 module NodeExecution
   def node(filename)
@@ -12,6 +9,19 @@ module NodeExecution
   end
 end
 
-Spec::Runner.configure do |config|
-  config.include NodeExecution
+begin
+  require 'spec'
+  require 'spec/autorun'
+  require 'node-rb'
+  
+  Spec::Runner.configure do |config|
+    config.include NodeExecution
+  end
+rescue LoadError
+  require 'rspec'
+  require 'node-rb'
+  
+  RSpec.configure do |config|
+    config.include NodeExecution
+  end
 end

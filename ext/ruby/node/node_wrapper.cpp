@@ -1,14 +1,15 @@
 #include <node.h>
-#include <v8.h>
 #include "common.h"
+#include <stdio.h>
 
 using namespace node;
-using namespace v8;
 
 extern "C" void init(Handle<Object> target)
 {
   init_ruby();
 
   HandleScope scope;
-  target->Set(String::New("hello"), String::New("World"));
+  Handle<Function> eval_func = FunctionTemplate::New(ruby_eval)->GetFunction();
+  eval_func->SetName(String::New("eval"));
+  target->Set(String::New("eval"), eval_func);
 }
