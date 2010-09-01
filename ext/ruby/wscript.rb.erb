@@ -8,9 +8,9 @@ VERSION = '<%=version%>'
 def set_options(opt):
   opt.tool_options('compiler_cxx')
   opt.add_option('--with-ruby-archdir', type='string', dest='rubyarchdir', help='Specify directory where to install arch specific files')
-  
+  opt.add_option('--with-ruby-libdir',  type='string', dest='rubylibdir',  help='Specify alternate ruby library path')
 
-def configure(conf):
+def configure(conf):    
   conf.check_tool('compiler_cxx')
   conf.check_tool('node_addon')
 
@@ -25,12 +25,19 @@ def configure(conf):
   cpppath += [os.path.join(ruby_hdrdir[0], '<%=Config::expand CONFIG['arch']%>')]
   <%end%>
 
-  conf.check(header_name="ruby.h", includes=cpppath, errmsg='could not find ruby header file')
-  conf.env.LIBPATH_RUBYEXT = ['<%=Config::expand CONFIG['libdir']%>']
-  conf.env.LIBPATH_RUBYEXT += archdir
-  conf.env.INCLUDES_RUBYEXT = cpppath
-  conf.env.CCFLAGS_RUBYEXT = ['<%=Config::expand CONFIG['CCDLFLAGS']%>']
-  conf.env.rubyext_PATTERN = '%s.<%=Config::expand CONFIG['DLEXT']%>'
+  conf.env.CPPPATH_RUBY += cpppath
+  conf.env.LIB_RUBY = 'ruby'
+  conf.env.LIBPATH_RUBY = ['<%=Config::expand CONFIG['libdir']%>']
+  conf.env.LIBPATH_RUBY += archdir
+
+  conf.check(header_name="ruby.h", errmsg='could not find ruby header file')
+  conf.env.CCFLAGS_RUBY += ['<%=Config::expand CONFIG['CCDLFLAGS']%>']
+#  conf.env.LIBPATH_RUBYEXT = ['<%=Config::expand CONFIG['libdir']%>']
+#  conf.env.LIBPATH_RUBYEXT += archdir
+#  conf.env.INCLUDES_RUBYEXT = cpppath
+#  conf.env.CCFLAGS_RUBYEXT = ['<%=Config::expand CONFIG['CCDLFLAGS']%>']
+  #conf.env.rubyext_PATTERN = '%s.<%=Config::expand CONFIG['DLEXT']%>'
+  conf.env.shlib_PATTERN = '%s.<%=Config::expand CONFIG['DLEXT']%>'
 
   # ok this is really stupid, but the command and flags are combined.
   # so we try to find the first argument...
@@ -69,11 +76,15 @@ def build(bld):
 #  obj2.uselib = 'RUBY'
 #  obj2.add_objects = 'wrapper'
 #  #obj2.uselib_local = 'wrapper'
-#  obj2.includes = '<%=Config::expand CONFIG['rubyhdrdir']%>'
+#  obj2.includes = '<%=Config::expand CONFIG['rubyhdrdir'] || ""%>'
 #  obj2.cxxflags = ['-dynamic', '-bundle', '-Wl,-undefined,dynamic_lookup', '-Wl,-multiply_defined,suppress', '-Wl,-flat_namespace']
 #  ruby = self.env['RUBY']
 
   ruby = bld.new_task_gen('cxx', 'shlib', 'node_addon')
+  ruby.target = 'ruby'
+  ruby.source = 'ruby.cpp <%=version_specific_source%>'
+  ruby.add_objects = 'wrapper'
+  ruby.uselib = 'RUBY'
   
 
 
