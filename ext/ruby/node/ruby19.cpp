@@ -1,6 +1,5 @@
 #include <ruby.h>
 #include "common.h"
-#include <stdio.h>
 
 /* This file initializes Ruby when compiled against 1.9.x header files. */
 

@@ -1,6 +1,5 @@
 #include <node.h>
 #include "common.h"
-#include <stdio.h>
 
 using namespace node;
 
