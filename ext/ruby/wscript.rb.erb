@@ -1,0 +1,108 @@
+import os
+import Options
+
+srcdir = '<%=srcdir%>'
+blddir = '<%=blddir%>'
+VERSION = '<%=version%>' 
+
+def set_options(opt):
+  opt.tool_options('compiler_cxx')
+  opt.add_option('--with-ruby-archdir', type='string', dest='rubyarchdir', help='Specify directory where to install arch specific files')
+  
+
+def configure(conf):
+  conf.check_tool('compiler_cxx')
+  conf.check_tool('node_addon')
+
+#  conf.env['LIBPATH_RUBY'] = '#{Config::expand(CONFIG["libdir"])}'
+#  conf.env['LIB_RUBY'] = 'ruby'
+
+  archdir = ['<%=Config::expand CONFIG['archdir']%>']
+  cpppath = archdir
+  <%if RUBY_VERSION >= "1.9.0"%>
+  ruby_hdrdir = ['<%=Config::expand CONFIG['rubyhdrdir']%>']
+  cpppath += ruby_hdrdir
+  cpppath += [os.path.join(ruby_hdrdir[0], '<%=Config::expand CONFIG['arch']%>')]
+  <%end%>
+
+  conf.check(header_name="ruby.h", includes=cpppath, errmsg='could not find ruby header file')
+  conf.env.LIBPATH_RUBYEXT = ['<%=Config::expand CONFIG['libdir']%>']
+  conf.env.LIBPATH_RUBYEXT += archdir
+  conf.env.INCLUDES_RUBYEXT = cpppath
+  conf.env.CCFLAGS_RUBYEXT = ['<%=Config::expand CONFIG['CCDLFLAGS']%>']
+  conf.env.rubyext_PATTERN = '%s.<%=Config::expand CONFIG['DLEXT']%>'
+
+  # ok this is really stupid, but the command and flags are combined.
+  # so we try to find the first argument...
+  flags = <%=(Config::expand CONFIG['LDSHARED']).split.inspect%>
+  
+  while flags and flags[0][0] != '-':
+          flags = flags[1:]
+  
+  # we also want to strip out the deprecated ppc flags
+  if len(flags) > 1 and flags[1] == "ppc":
+          flags = flags[2:]
+  
+  conf.env.LINKFLAGS_RUBYEXT = flags
+  conf.env.LINKFLAGS_RUBYEXT += ['<%=Config::expand CONFIG['LIBS']%>']
+  conf.env.LINKFLAGS_RUBYEXT += ['<%=Config::expand CONFIG['LIBRUBYARG_SHARED']%>']
+    
+  if Options.options.rubyarchdir:
+    conf.env.ARCHDIR_RUBY = Options.options.rubyarchdir
+  else:
+    conf.env.ARCHDIR_RUBY = '<%=Config::expand CONFIG['sitearchdir']%>'
+  
+  if Options.options.rubylibdir:
+    conf.env.LIBDIR_RUBY = Options.options.rubylibdir
+  else:
+    conf.env.LIBDIR_RUBY = '<%=Config::expand CONFIG['sitelibdir']%>'
+    
+def build(bld):
+  obj1 = bld.new_task_gen('cxx', 'objects', 'node_addon')
+  obj1.target = 'wrapper'
+  obj1.source = 'node_wrapper.cpp'
+
+  
+#  obj2 = bld.new_task_gen('cxx', 'shlib', 'node_addon')
+#  obj2.target = 'ruby'
+#  obj2.source = 'ruby.cpp <%=version_specific_source%>'
+#  obj2.uselib = 'RUBY'
+#  obj2.add_objects = 'wrapper'
+#  #obj2.uselib_local = 'wrapper'
+#  obj2.includes = '<%=Config::expand CONFIG['rubyhdrdir']%>'
+#  obj2.cxxflags = ['-dynamic', '-bundle', '-Wl,-undefined,dynamic_lookup', '-Wl,-multiply_defined,suppress', '-Wl,-flat_namespace']
+#  ruby = self.env['RUBY']
+
+  ruby = bld.new_task_gen('cxx', 'shlib', 'node_addon')
+  
+
+
+#self.env.LIBPATH_RUBYEXT = read_config('libdir')
+#self.env.LIBPATH_RUBYEXT += archdir
+#self.env.INCLUDES_RUBYEXT = cpppath
+#self.env.CCFLAGS_RUBYEXT = read_config('CCDLFLAGS')
+#self.env.rubyext_PATTERN = '%s.' + read_config('DLEXT')[0]
+#
+## ok this is really stupid, but the command and flags are combined.
+## so we try to find the first argument...
+#flags = read_config('LDSHARED')
+#while flags and flags[0][0] != '-':
+#        flags = flags[1:]
+#
+## we also want to strip out the deprecated ppc flags
+#if len(flags) > 1 and flags[1] == "ppc":
+#        flags = flags[2:]
+#
+#self.env.LINKFLAGS_RUBYEXT = flags
+#self.env.LINKFLAGS_RUBYEXT += read_config('LIBS')
+#self.env.LINKFLAGS_RUBYEXT += read_config('LIBRUBYARG_SHARED')
+#
+#if Options.options.rubyarchdir:
+#        self.env.ARCHDIR_RUBY = Options.options.rubyarchdir
+#else:
+#        self.env.ARCHDIR_RUBY = read_config('sitearchdir')[0]
+#
+#if Options.options.rubylibdir:
+#        self.env.LIBDIR_RUBY = Options.options.rubylibdir
+#else:
+#        self.env.LIBDIR_RUBY = read_config('sitelibdir')[0]

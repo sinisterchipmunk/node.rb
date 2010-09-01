@@ -7,7 +7,8 @@ using namespace v8;
 
 extern "C" void init(Handle<Object> target)
 {
+  init_ruby();
+
   HandleScope scope;
   target->Set(String::New("hello"), String::New("World"));
-  sayhi();
 }
