@@ -8,7 +8,7 @@ begin
     gem.summary = %Q{Embeds a Ruby interpreter (www.ruby-lang.org) into Node.js (www.nodejs.org) for your coding pleasure.}
     gem.description = %Q{Embeds a Ruby interpreter (www.ruby-lang.org) into Node.js (www.nodejs.org) for your coding pleasure.}
     gem.email = "sinisterchipmunk@gmail.com"
-    gem.homepage = "http://github.com/sinisterchipmunk/node.rb"
+    gem.homepage = "http://www.thoughtsincomputation.com"
     gem.authors = ["Colin MacKenzie IV"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
