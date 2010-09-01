@@ -30,7 +30,6 @@ File.open(File.join(this_dir, "node/wscript"), "w") do |file|
 end
 
 Dir.chdir File.join(this_dir, "node") do
-  #{Config::expand($INCFLAGS).gsub(/\$\(hdrdir\)/, $hdrdir).gsub(/\-I/, '')}
   cmd = "node-waf configure build"
   system(cmd) || raise("Could not build extension for node.js!")
 end
