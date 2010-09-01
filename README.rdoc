@@ -49,6 +49,16 @@ That's roughly equivalent to running the node-rb command directly.
 There are plans to expose Node to Ruby and vice versa so that objects can travel between the two contexts,
 but that's not available at this time.
 
+== Testbeds
+
+I've tested this gem on various combinations of the following platforms:
+
+- Ruby 1.8.7 on Mac
+- Ruby 1.9.2 on Mac
+- Ruby 1.8.7 on Ubuntu 10.4
+- Ruby 1.9.1 on Ubuntu 10.4
+- Ruby 1.9.2 on Ubuntu 10.4
+
 == Note on Patches/Pull Requests
  
 * Fork the project.
