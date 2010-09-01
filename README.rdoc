@@ -2,6 +2,16 @@
 
 Embeds a Ruby interpreter (www.ruby-lang.org) into Node.js (www.nodejs.org) for your coding pleasure.
 
+== Prerequisites
+
+You need the following before you can install node.rb:
+- Ruby 1.8.7 or newer (including all flavors of Ruby 1.9)
+- Node.js 0.2.0
+- Python 2.4 for compiling (but Node needs this too so it probably isn't an issue)
+
+Node.js currently only runs on Linux and Mac machines, so I don't think this will go well for you if you're on Windows.
+But hey, I've been wrong before...
+
 == Installation
 
   gem install node.rb
