@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "node.rb"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Embeds a Ruby interpreter (www.ruby-lang.org) into Node.js (www.nodejs.org) for your coding pleasure.}
+    gem.description = %Q{Embeds a Ruby interpreter (www.ruby-lang.org) into Node.js (www.nodejs.org) for your coding pleasure.}
     gem.email = "sinisterchipmunk@gmail.com"
     gem.homepage = "http://github.com/sinisterchipmunk/node.rb"
     gem.authors = ["Colin MacKenzie IV"]
