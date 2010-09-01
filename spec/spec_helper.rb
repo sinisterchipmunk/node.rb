@@ -12,14 +12,14 @@ end
 begin
   require 'spec'
   require 'spec/autorun'
-  require 'node-rb'
+  require 'node.rb'
   
   Spec::Runner.configure do |config|
     config.include NodeExecution
   end
 rescue LoadError
   require 'rspec'
-  require 'node-rb'
+  require 'node.rb'
   
   RSpec.configure do |config|
     config.include NodeExecution
